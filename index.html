@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Baseball League | World Peace Through Baseball</title>
+    <meta name="description" content="Official home of the Shipping Baseball League - Where maritime meets diamond. Join the inaugural Shipping World Series.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        maritime: {
+                            navy: '#0f172a',
+                            deep: '#1e293b',
+                            ocean: '#0ea5e9',
+                            wave: '#06b6d4',
+                            steel: '#64748b',
+                            foam: '#f8fafc'
+                        },
+                        sport: {
+                            red: '#dc2626',
+                            gold: '#f59e0b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Oswald', 'sans-serif'],
+                    },
+                    animation: {
+                        'wave': 'wave 10s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        wave: {
+                            '0%, 100%': { transform: 'translateX(0)' },
+                            '50%': { transform: 'translateX(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles */
+        .text-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .gradient-maritime { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0ea5e9 100%); }
+        .gradient-ocean { background: linear-gradient(180deg, rgba(15,23,42,0) 0%, rgba(14,165,233,0.1) 100%); }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #0ea5e9; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
+
+        /* Scoreboard Ticker Animation */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+        .ticker {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 30s linear infinite;
+        }
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* Card Hover Effects */
+        .team-card { transition: all 0.3s ease; }
+        .team-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+
+        /* Image Gallery Grid */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        
+        /* Live Score Pulse */
+        .live-indicator { animation: pulse-red 2s infinite; }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+        }
+    </style>
+</head>
+<body class="bg-maritime-foam text-slate-800 font-sans antialiased">
+
+    <!-- Live Scoreboard Ticker -->
+    <div class="bg-maritime-navy text-white border-b-4 border-maritime-ocean sticky top-0 z-50">
+        <div class="flex items-center">
+            <div class="bg-sport-red px-4 py-2 font-display font-bold text-sm uppercase tracking-wider shrink-0">
+                <i class="fas fa-circle text-xs live-indicator mr-2"></i>Live Scores
+            </div>
+            <div class="ticker-wrap bg-maritime-deep py-2">
+                <div class="ticker font-mono text-sm" id="liveScores">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white/95 backdrop-blur-md shadow-lg sticky top-[40px] z-40 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-12 h-12 bg-gradient-to-br from-maritime-navy to-maritime-ocean rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
+                        <i class="fas fa-anchor"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-display font-bold text-2xl text-maritime-navy leading-none tracking-tight">SHIPPING<span class="text-maritime-ocean">BASEBALL</span></h1>
+                        <p class="text-xs text-maritime-steel font-medium tracking-widest uppercase">World Peace Through Baseball</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#news" class="text-slate-600 hover:text-maritime-ocean font-semibold transition-colors">News</a>
+                    <a href="#teams" class="text-slate-600 hover:text-maritime-ocean font-semibold transition-colors">Teams</a>
+                    <a href="#schedule" class="text-slate-600 hover:text-maritime-ocean font-semibold transition-colors">Schedule</a>
+                    <a href="#auction" class="text-sport-gold hover:text-amber-600 font-bold transition-colors"><i class="fas fa-gavel mr-1"></i>Auction</a>
+                    <a href="#community" class="text-slate-600 hover:text-maritime-ocean font-semibold transition-colors">Community</a>
+                    <button class="bg-maritime-navy text-white px-6 py-2 rounded-full font-semibold hover:bg-maritime-ocean transition-all transform hover:scale-105 shadow-md">
+                        Login / Register
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobileMenuBtn" class="text-slate-600 hover:text-maritime-navy focus:outline-none p-2">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-200 absolute w-full shadow-xl">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#news" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-maritime-ocean hover:bg-slate-50">News</a>
+                <a href="#teams" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-maritime-ocean hover:bg-slate-50">Teams</a>
+                <a href="#schedule" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-maritime-ocean hover:bg-slate-50">Schedule</a>
+                <a href="#auction" class="block px-3 py-2 rounded-md text-base font-medium text-sport-gold hover:bg-amber-50">Franchise Auction</a>
+                <a href="#community" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-maritime-ocean hover:bg-slate-50">Community</a>
+                <button class="w-full mt-4 bg-maritime-navy text-white px-6 py-3 rounded-lg font-semibold">Login / Register</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative bg-maritime-navy overflow-hidden">
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-gradient-to-r from-maritime-navy via-maritime-navy/90 to-transparent z-10"></div>
+            <img src="https://i.postimg.cc/PxBfjhRS/hero.jpg" alt="Baseball Stadium with Ship" class="w-full h-full object-cover opacity-100">
+            <!-- Animated Wave Overlay -->
+            <svg class="absolute bottom-0 left-0 w-full h-24 text-maritime-foam fill-current opacity-20 animate-wave" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+            </svg>
+        </div>
+        
+        <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
+            <div class="lg:w-2/3">
+                <div class="inline-flex items-center gap-2 bg-sport-red/20 border border-sport-red/30 rounded-full px-4 py-1 mb-6 backdrop-blur-sm">
+                    <span class="bg-sport-red text-white text-xs font-bold px-2 py-0.5 rounded-full uppercase">Inaugural Season</span>
+                    <span class="text-red-100 text-sm font-medium">Shipping World Series 2024</span>
+                </div>
+                <h1 class="font-display text-5xl md:text-7xl font-bold text-white mb-6 leading-tight text-shadow">
+                    WHERE THE SEAS<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-maritime-ocean to-cyan-400">MEET THE DIAMOND</span>
+                </h1>
+                <p class="text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed">
+                    The world's first semi-professional baseball league featuring shipping companies competing across global ports. 
+                    Uniting maritime culture with America's pastime for <strong class="text-white">World Peace Through Baseball</strong>.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#auction" class="inline-flex items-center justify-center bg-sport-gold hover:bg-amber-500 text-maritime-navy font-bold py-4 px-8 rounded-lg transition-all transform hover:scale-105 shadow-lg text-lg">
+                        <i class="fas fa-gavel mr-2"></i>Join Franchise Auction
+                    </a>
+                    <a href="#teams" class="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 text-white border-2 border-white/30 font-bold py-4 px-8 rounded-lg transition-all backdrop-blur-sm text-lg">
+                        <i class="fas fa-users mr-2"></i>Meet The Teams
+                    </a>
+                </div>
+                
+                <!-- Quick Stats -->
+                <div class="mt-12 grid grid-cols-3 gap-8 border-t border-white/20 pt-8">
+                    <div>
+                        <div class="text-3xl font-display font-bold text-white">15</div>
+                        <div class="text-sm text-slate-400 uppercase tracking-wider">Global Franchises</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-display font-bold text-white">120</div>
+                        <div class="text-sm text-slate-400 uppercase tracking-wider">Games Per Season</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-display font-bold text-white">40+</div>
+                        <div class="text-sm text-slate-400 uppercase tracking-wider">International Ports</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Franchise Auction Alert Banner -->
+    <div id="auction" class="bg-gradient-to-r from-amber-500 to-orange-600 text-white py-4 px-4 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAzNHYtNGgtMnY0aC00djJoNHY0aDJ2LTRoNHYtMmg0eiIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIwLjEiLz48L2c+PC9zdmc+')] opacity-30"></div>
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
+            <div class="flex items-center gap-4">
+                <div class="bg-white/20 p-3 rounded-full">
+                    <i class="fas fa-ship text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-display font-bold text-xl">Franchise Auction Now Live!</h3>
+                    <p class="text-amber-100 text-sm">15 exclusive port franchises available for bidding</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="text-center hidden md:block">
+                    <div class="text-xs uppercase tracking-wider opacity-80">Auction Ends In</div>
+                    <div class="font-mono text-2xl font-bold" id="auctionCountdown">14:23:45:12</div>
+                </div>
+                <a href="#auction-details" class="bg-white text-orange-600 hover:bg-orange-50 font-bold py-3 px-6 rounded-lg shadow-lg transition-all transform hover:scale-105">
+                    Place Bid Now
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
+
+        <!-- Featured News Section -->
+        <section id="news" class="scroll-mt-24">
+            <div class="flex justify-between items-end mb-8">
+                <div>
+                    <h2 class="font-display text-4xl font-bold text-maritime-navy mb-2">League News</h2>
+                    <p class="text-maritime-steel">Latest updates from across the Shipping Baseball League</p>
+                </div>
+                <a href="#" class="hidden md:inline-flex items-center text-maritime-ocean font-semibold hover:underline">
+                    View All News <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Featured Article -->
+                <article class="lg:col-span-2 group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-2xl shadow-2xl mb-4">
+                        <img src="https://i.postimg.cc/Rqx0c91M/about.jpg" alt="Baseball Game" class="w-full h-96 object-cover transform group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute top-4 left-4 bg-sport-red text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Breaking</div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 text-white">
+                            <div class="flex items-center gap-2 text-sm mb-2 opacity-90">
+                                <i class="far fa-calendar"></i> Nov 15, 2023
+                                <span class="mx-2">•</span>
+                                <i class="far fa-clock"></i> 5 min read
+                            </div>
+                            <h3 class="font-display text-3xl font-bold mb-2 group-hover:text-maritime-ocean transition-colors">Inaugural Shipping World Series Championship Date Announced</h3>
+                            <p class="text-slate-200 line-clamp-2">The SBL Commission has officially set the dates for the championship tournament, bringing together the top four maritime franchises...</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Side Articles -->
+                <div class="space-y-6">
+                    <article class="flex gap-4 group cursor-pointer bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all border border-slate-100">
+                        <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" class="w-24 h-24 object-cover rounded-lg shrink-0" alt="Player">
+                        <div>
+                            <div class="text-xs text-maritime-ocean font-bold uppercase mb-1">Player Profile</div>
+                            <h4 class="font-display font-bold text-lg text-slate-800 group-hover:text-maritime-ocean transition-colors leading-tight mb-1">Captain James Morrison Signs with Port of Rotterdam</h4>
+                            <div class="text-xs text-slate-500">2 hours ago</div>
+                        </div>
+                    </article>
+
+                    <article class="flex gap-4 group cursor-pointer bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all border border-slate-100">
+                        <img src="https://i.postimg.cc/28TyKqDn/MV-Atlantic-Express.jpg" class="w-24 h-24 object-cover rounded-lg shrink-0" alt="Container Ship">
+                        <div>
+                            <div class="text-xs text-maritime-ocean font-bold uppercase mb-1">Logistics</div>
+                            <h4 class="font-display font-bold text-lg text-slate-800 group-hover:text-maritime-ocean transition-colors leading-tight mb-1">MV Atlantic Express Cleared for Season Opener</h4>
+                            <div class="text-xs text-slate-500">5 hours ago</div>
+                        </div>
+                    </article>
+
+                    <article class="flex gap-4 group cursor-pointer bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition-all border border-slate-100">
+                        <img src="https://i.postimg.cc/k5QkTSrr/Port-Youth-Programs.jpg" class="w-24 h-24 object-cover rounded-lg shrink-0" alt="Community">
+                        <div>
+                            <div class="text-xs text-maritime-ocean font-bold uppercase mb-1">Community</div>
+                            <h4 class="font-display font-bold text-lg text-slate-800 group-hover:text-maritime-ocean transition-colors leading-tight mb-1">SBL Foundation Donates $2M to Port Youth Programs</h4>
+                            <div class="text-xs text-slate-500">1 day ago</div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Teams & Standings Section -->
+        <section id="teams" class="scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="font-display text-4xl font-bold text-maritime-navy mb-4">Teams & Standings</h2>
+                <p class="text-maritime-steel max-w-2xl mx-auto">Fifteen global shipping companies competing across international ports for the Championship Trophy</p>
+                
+                <!-- Tab Navigation -->
+                <div class="flex justify-center gap-2 mt-8 bg-white p-1 rounded-xl inline-flex shadow-md border border-slate-200">
+                    <button onclick="switchTab('teams-tab')" id="btn-teams-tab" class="tab-btn px-6 py-2 rounded-lg font-semibold text-sm transition-all bg-maritime-navy text-white">Franchises</button>
+                    <button onclick="switchTab('standings-tab')" id="btn-standings-tab" class="tab-btn px-6 py-2 rounded-lg font-semibold text-sm transition-all text-slate-600 hover:bg-slate-100">Standings</button>
+                    <button onclick="switchTab('players-tab')" id="btn-players-tab" class="tab-btn px-6 py-2 rounded-lg font-semibold text-sm transition-all text-slate-600 hover:bg-slate-100">Top Players</button>
+                </div>
+            </div>
+
+            <!-- Teams Grid -->
+            <div id="teams-tab" class="tab-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Team Cards (Sample of 6 shown, representing 15 total) -->
+                <div class="team-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 group cursor-pointer">
+                    <div class="h-32 bg-gradient-to-r from-blue-900 to-blue-700 relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==')]"></div>
+                        <div class="absolute -bottom-10 left-6 w-20 h-20 bg-white rounded-xl shadow-lg flex items-center justify-center text-3xl">⚓</div>
+                    </div>
+                    <div class="pt-12 pb-6 px-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-display font-bold text-xl text-slate-800">Rotterdam Mariners</h3>
+                                <p class="text-sm text-maritime-steel"><i class="fas fa-map-marker-alt text-sport-red mr-1"></i>Port of Rotterdam, NL</p>
+                            </div>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded">N. Europe</span>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between text-sm border-t border-slate-100 pt-4">
+                            <span class="text-slate-600">Record: <strong class="text-slate-900">12-4</strong></span>
+                            <span class="text-maritime-ocean font-semibold group-hover:translate-x-1 transition-transform">View Roster <i class="fas fa-chevron-right text-xs"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 group cursor-pointer">
+                    <div class="h-32 bg-gradient-to-r from-red-800 to-red-600 relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==')]"></div>
+                        <div class="absolute -bottom-10 left-6 w-20 h-20 bg-white rounded-xl shadow-lg flex items-center justify-center text-3xl">🚢</div>
+                    </div>
+                    <div class="pt-12 pb-6 px-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-display font-bold text-xl text-slate-800">Singapore Sailors</h3>
+                                <p class="text-sm text-maritime-steel"><i class="fas fa-map-marker-alt text-sport-red mr-1"></i>Port of Singapore, SG</p>
+                            </div>
+                            <span class="bg-red-100 text-red-800 text-xs font-bold px-2 py-1 rounded">Asia Pacific</span>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between text-sm border-t border-slate-100 pt-4">
+                            <span class="text-slate-600">Record: <strong class="text-slate-900">11-5</strong></span>
+                            <span class="text-maritime-ocean font-semibold group-hover:translate-x-1 transition-transform">View Roster <i class="fas fa-chevron-right text-xs"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 group cursor-pointer">
+                    <div class="h-32 bg-gradient-to-r from-emerald-800 to-emerald-600 relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==')]"></div>
+                        <div class="absolute -bottom-10 left-6 w-20 h-20 bg-white rounded-xl shadow-lg flex items-center justify-center text-3xl">🌊</div>
+                    </div>
+                    <div class="pt-12 pb-6 px-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-display font-bold text-xl text-slate-800">Panama Canalers</h3>
+                                <p class="text-sm text-maritime-steel"><i class="fas fa-map-marker-alt text-sport-red mr-1"></i>Panama City, PA</p>
+                            </div>
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2 py-1 rounded">Americas</span>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between text-sm border-t border-slate-100 pt-4">
+                            <span class="text-slate-600">Record: <strong class="text-slate-900">10-6</strong></span>
+                            <span class="text-maritime-ocean font-semibold group-hover:translate-x-1 transition-transform">View Roster <i class="fas fa-chevron-right text-xs"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 group cursor-pointer">
+                    <div class="h-32 bg-gradient-to-r from-slate-800 to-slate-600 relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==')]"></div>
+                        <div class="absolute -bottom-10 left-6 w-20 h-20 bg-white rounded-xl shadow-lg flex items-center justify-center text-3xl">⚓</div>
+                    </div>
+                    <div class="pt-12 pb-6 px-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-display font-bold text-xl text-slate-800">Hamburg Haulers</h3>
+                                <p class="text-sm text-maritime-steel"><i class="fas fa-map-marker-alt text-sport-red mr-1"></i>Port of Hamburg, DE</p>
+                            </div>
+                            <span class="bg-slate-100 text-slate-800 text-xs font-bold px-2 py-1 rounded">N. Europe</span>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between text-sm border-t border-slate-100 pt-4">
+                            <span class="text-slate-600">Record: <strong class="text-slate-900">9-7</strong></span>
+                            <span class="text-maritime-ocean font-semibold group-hover:translate-x-1 transition-transform">View Roster <i class="fas fa-chevron-right text-xs"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 group cursor-pointer">
+                    <div class="h-32 bg-gradient-to-r from-orange-700 to-orange-500 relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==')]"></div>
+                        <div class="absolute -bottom-10 left-6 w-20 h-20 bg-white rounded-xl shadow-lg flex items-center justify-center text-3xl">🏗️</div>
+                    </div>
+                    <div class="pt-12 pb-6 px-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-display font-bold text-xl text-slate-800">Long Beach Longshoremen</h3>
+                                <p class="text-sm text-maritime-steel"><i class="fas fa-map-marker-alt text-sport-red mr-1"></i>Port of Long Beach, USA</p>
+                            </div>
+                            <span class="bg-orange-100 text-orange-800 text-xs font-bold px-2 py-1 rounded">N. America</span>
+                        </div>
+                        <div class="mt-4 flex items-center justify-between text-sm border-t border-slate-100 pt-4">
+                            <span class="text-slate-600">Record: <strong class="text-slate-900">8-8</strong></span>
+                            <span class="text-maritime-ocean font-semibold group-hover:translate-x-1 transition-transform">View Roster <i class="fas fa-chevron-right text-xs"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card bg-gradient-to-br from-maritime-navy to-maritime-deep rounded-2xl shadow-lg overflow-hidden border border-slate-700 group cursor-pointer flex items-center justify-center min-h-[280px]">
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl text-white group-hover:bg-white/20 transition-colors">+</div>
+                        <h3 class="font-display font-bold text-xl text-white mb-2">View All 15 Teams</h3>
+                        <p class="text-slate-400 text-sm">Explore the complete league roster</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standings Table (Hidden by default) -->
+            <div id="standings-tab" class="tab-content hidden bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-200">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500 font-semibold">
+                                <th class="px-6 py-4">Rank</th>
+                                <th class="px-6 py-4">Team</th>
+                                <th class="px-6 py-4 text-center">W</th>
+                                <th class="px-6 py-4 text-center">L</th>
+                                <th class="px-6 py-4 text-center">PCT</th>
+                                <th class="px-6 py-4 text-center">GB</th>
+                                <th class="px-6 py-4 text-center">Streak</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-bold text-sport-gold">1</td>
+                                <td class="px-6 py-4 font-semibold text-slate-800">Rotterdam Mariners</td>
+                                <td class="px-6 py-4 text-center">12</td>
+                                <td class="px-6 py-4 text-center">4</td>
+                                <td class="px-6 py-4 text-center font-bold text-maritime-ocean">.750</td>
+                                <td class="px-6 py-4 text-center">-</td>
+                                <td class="px-6 py-4 text-center text-green-600 font-medium">W3</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-bold text-slate-400">2</td>
+                                <td class="px-6 py-4 font-semibold text-slate-800">Singapore Sailors</td>
+                                <td class="px-6 py-4 text-center">11</td>
+                                <td class="px-6 py-4 text-center">5</td>
+                                <td class="px-6 py-4 text-center font-bold text-maritime-ocean">.688</td>
+                                <td class="px-6 py-4 text-center">1.0</td>
+                                <td class="px-6 py-4 text-center text-green-600 font-medium">W1</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 font-bold text-amber-700">3</td>
+                                <td class="px-6 py-4 font-semibold text-slate-800">Panama Canalers</td>
+                                <td class="px-6 py-4 text-center">10</td>
+                                <td class="px-6 py-4 text-center">6</td>
+                                <td class="px-6 py-4 text-center font-bold text-maritime-ocean">.625</td>
+                                <td class="px-6 py-4 text-center">2.0</td>
+                                <td class="px-6 py-4 text-center text-red-600 font-medium">L2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Top Players (Hidden by default) -->
+            <div id="players-tab" class="tab-content hidden grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100 flex items-center gap-4">
+                    <div class="w-16 h-16 bg-slate-200 rounded-full overflow-hidden shrink-0">
+                        <img src="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover" alt="Player">
+                    </div>
+                    <div>
+                        <div class="text-xs text-sport-gold font-bold uppercase">Batting Leader</div>
+                        <h4 class="font-display font-bold text-lg">James Morrison</h4>
+                        <p class="text-sm text-slate-600">Rotterdam Mariners • .342 AVG</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100 flex items-center gap-4">
+                    <div class="w-16 h-16 bg-slate-200 rounded-full overflow-hidden shrink-0">
+                        <img src="https://images.unsplash.com/photo-1562077772-3be1220d7966?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover" alt="Player">
+                    </div>
+                    <div>
+                        <div class="text-xs text-sport-gold font-bold uppercase">Home Runs</div>
+                        <h4 class="font-display font-bold text-lg">Kenji Tanaka</h4>
+                        <p class="text-sm text-slate-600">Singapore Sailors • 18 HR</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-100 flex items-center gap-4">
+                    <div class="w-16 h-16 bg-slate-200 rounded-full overflow-hidden shrink-0">
+                        <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover" alt="Player">
+                    </div>
+                    <div>
+                        <div class="text-xs text-sport-gold font-bold uppercase">ERA Leader</div>
+                        <h4 class="font-display font-bold text-lg">Carlos Rivera</h4>
+                        <p class="text-sm text-slate-600">Panama Canalers • 2.14 ERA</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section id="schedule" class="scroll-mt-24 bg-slate-50 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                    <div>
+                        <h2 class="font-display text-4xl font-bold text-maritime-navy mb-2">Game Schedule</h2>
+                        <p class="text-maritime-steel">Filter by port, team, or date</p>
+                    </div>
+                    <div class="flex gap-2 bg-white p-2 rounded-lg shadow-sm border border-slate-200">
+                        <select class="bg-transparent text-sm font-medium text-slate-700 focus:outline-none cursor-pointer">
+                            <option>All Ports</option>
+                            <option>Rotterdam</option>
+                            <option>Singapore</option>
+                            <option>Long Beach</option>
+                        </select>
+                        <div class="w-px bg-slate-200"></div>
+                        <select class="bg-transparent text-sm font-medium text-slate-700 focus:outline-none cursor-pointer">
+                            <option>All Teams</option>
+                            <option>Mariners</option>
+                            <option>Sailors</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-4" id="scheduleContainer">
+                    <!-- Schedule items populated by JS -->
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button class="bg-white border-2 border-maritime-navy text-maritime-navy hover:bg-maritime-navy hover:text-white font-bold py-3 px-8 rounded-lg transition-all">
+                        Load Full Schedule
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Franchise Auction Detail Section -->
+        <section id="auction-details" class="scroll-mt-24">
+            <div class="bg-gradient-to-br from-maritime-navy to-slate-900 rounded-3xl overflow-hidden shadow-2xl">
+                <div class="grid lg:grid-cols-2 gap-0">
+                    <div class="p-8 lg:p-12 text-white">
+                        <div class="inline-flex items-center gap-2 bg-sport-gold/20 border border-sport-gold/30 rounded-full px-4 py-1 mb-6">
+                            <i class="fas fa-gavel text-sport-gold"></i>
+                            <span class="text-sport-gold text-sm font-bold uppercase">Limited Time Opportunity</span>
+                        </div>
+                        <h2 class="font-display text-4xl lg:text-5xl font-bold mb-6">Franchise Auction</h2>
+                        <p class="text-slate-300 text-lg mb-8 leading-relaxed">
+                            Secure your port's place in the inaugural Shipping Baseball League season. 
+                            15 exclusive franchise opportunities available for shipping companies, port authorities, and maritime investors.
+                        </p>
+                        
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-maritime-ocean/20 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fas fa-check text-maritime-ocean text-xs"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Exclusive Territory Rights</h4>
+                                    <p class="text-sm text-slate-400">Official representation for your port city in all league play</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-maritime-ocean/20 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fas fa-check text-maritime-ocean text-xs"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Revenue Sharing</h4>
+                                    <p class="text-sm text-slate-400">Participate in league-wide media and merchandise revenue</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-6 h-6 rounded-full bg-maritime-ocean/20 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fas fa-check text-maritime-ocean text-xs"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">World Series Eligibility</h4>
+                                    <p class="text-sm text-slate-400">Compete for the championship trophy in Year One</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button class="bg-sport-gold hover:bg-amber-500 text-maritime-navy font-bold py-4 px-8 rounded-lg transition-all transform hover:scale-105 shadow-lg text-center">
+                                View Auction Details
+                            </button>
+                            <button class="bg-white/10 hover:bg-white/20 text-white border border-white/30 font-bold py-4 px-8 rounded-lg transition-all text-center">
+                                Download Prospectus
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-8 lg:p-12">
+                        <h3 class="font-display text-2xl font-bold text-maritime-navy mb-6">Available Franchises</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                            <div class="p-4 border-2 border-slate-200 rounded-xl hover:border-maritime-ocean hover:bg-blue-50 transition-all cursor-pointer group">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-2xl">⚓</span>
+                                    <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Active</span>
+                                </div>
+                                <h4 class="font-bold text-slate-800 group-hover:text-maritime-ocean">Rotterdam Mariners</h4>
+                                <p class="text-sm text-slate-500">Netherlands • Current Bid: $2.4M</p>
+                            </div>
+                            
+                            <div class="p-4 border-2 border-slate-200 rounded-xl hover:border-maritime-ocean hover:bg-blue-50 transition-all cursor-pointer group">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-2xl">🚢</span>
+                                    <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-1 rounded">Active</span>
+                                </div>
+                                <h4 class="font-bold text-slate-800 group-hover:text-maritime-ocean">Singapore Sailors</h4>
+                                <p class="text-sm text-slate-500">Singapore • Current Bid: $2.1M</p>
+                            </div>
+
+                            <div class="p-4 border-2 border-slate-200 rounded-xl hover:border-maritime-ocean hover:bg-blue-50 transition-all cursor-pointer group">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-2xl">🌊</span>
+                                    <span class="bg-amber-100 text-amber-700 text-xs font-bold px-2 py-1 rounded">Reserve Met</span>
+                                </div>
+                                <h4 class="font-bold text-slate-800 group-hover:text-maritime-ocean">Panama Canalers</h4>
+                                <p class="text-sm text-slate-500">Panama • Current Bid: $1.8M</p>
+                            </div>
+
+                            <div class="p-4 border-2 border-slate-200 rounded-xl hover:border-maritime-ocean hover:bg-blue-50 transition-all cursor-pointer group">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-2xl">⚓</span>
+                                    <span class="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-1 rounded">Open</span>
+                                </div>
+                                <h4 class="font-bold text-slate-800 group-hover:text-maritime-ocean">Hamburg Haulers</h4>
+                                <p class="text-sm text-slate-500">Germany • Starting: $1.5M</p>
+                            </div>
+
+                            <div class="p-4 border-2 border-slate-200 rounded-xl hover:border-maritime-ocean hover:bg-blue-50 transition-all cursor-pointer group">
+                                <div class="flex justify-between items-start mb-2">
+                                    <span class="text-2xl">🏗️</span>
+                                    <span class="bg-slate-100 text-slate-600 text-xs font-bold px-2 py-1 rounded">Open</span>
+                                </div>
+                                <h4 class="font-bold text-slate-800 group-hover:text-maritime-ocean">Long Beach Longshoremen</h4>
+                                <p class="text-sm text-slate-500">USA • Starting: $1.5M</p>
+                            </div>
+
+                            <div class="p-4 border-2 border-slate-200 rounded-xl bg-slate-50 flex items-center justify-center cursor-pointer hover:bg-slate-100 transition-colors">
+                                <span class="text-slate-500 font-semibold text-sm">+ 10 More Available</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community & Forum Preview -->
+        <section id="community" class="scroll-mt-24">
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                    <h2 class="font-display text-4xl font-bold text-maritime-navy mb-6">Fan Community</h2>
+                    <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                        <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                            <h3 class="font-bold text-slate-800">Recent Discussions</h3>
+                            <a href="#" class="text-maritime-ocean text-sm font-semibold hover:underline">View Forum</a>
+                        </div>
+                        <div class="divide-y divide-slate-100">
+                            <div class="p-6 hover:bg-slate-50 transition-colors cursor-pointer">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-slate-800 hover:text-maritime-ocean">Prediction thread: Rotterdam vs Singapore championship odds?</h4>
+                                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Predictions</span>
+                                </div>
+                                <p class="text-sm text-slate-600 mb-3">With the season halfway through, let's break down the stats and see who's got the best shot at the trophy...</p>
+                                <div class="flex items-center gap-4 text-xs text-slate-500">
+                                    <span><i class="fas fa-user mr-1"></i>CaptainSteady</span>
+                                    <span><i class="fas fa-comment mr-1"></i>42 replies</span>
+                                    <span><i class="fas fa-clock mr-1"></i>2 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="p-6 hover:bg-slate-50 transition-colors cursor-pointer">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-slate-800 hover:text-maritime-ocean">New crew member introduction: MV Atlantic Express deck team</h4>
+                                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">Introductions</span>
+                                </div>
+                                <p class="text-sm text-slate-600 mb-3">Just joined the league as a shortstop for the Atlantic Express. Looking forward to playing in ports around the world!</p>
+                                <div class="flex items-center gap-4 text-xs text-slate-500">
+                                    <span><i class="fas fa-user mr-1"></i>Seafarer99</span>
+                                    <span><i class="fas fa-comment mr-1"></i>15 replies</span>
+                                    <span><i class="fas fa-clock mr-1"></i>5 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="p-6 hover:bg-slate-50 transition-colors cursor-pointer">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-semibold text-slate-800 hover:text-maritime-ocean">Game day logistics: Panama Canal stadium access</h4>
+                                    <span class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded-full">Logistics</span>
+                                </div>
+                                <p class="text-sm text-slate-600 mb-3">For fans arriving by ship, here's the updated mooring information and shuttle schedule to the ballpark...</p>
+                                <div class="flex items-center gap-4 text-xs text-slate-500">
+                                    <span><i class="fas fa-user mr-1"></i>PortAuthority_Official</span>
+                                    <span><i class="fas fa-comment mr-1"></i>8 replies</span>
+                                    <span><i class="fas fa-clock mr-1"></i>1 day ago</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-slate-50 border-t border-slate-200 text-center">
+                            <button class="text-maritime-ocean font-semibold hover:underline text-sm">Join the Discussion - Register Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-display text-2xl font-bold text-maritime-navy mb-6">Media Gallery</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="relative group cursor-pointer overflow-hidden rounded-lg aspect-square" onclick="openLightbox(this)">
+                            <img src="https://images.unsplash.com/photo-1566577739112-5180d4bf9390?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Game Action">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                                <i class="fas fa-expand text-white opacity-0 group-hover:opacity-100 transition-opacity text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="relative group cursor-pointer overflow-hidden rounded-lg aspect-square" onclick="openLightbox(this)">
+                            <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Player">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                                <i class="fas fa-expand text-white opacity-0 group-hover:opacity-100 transition-opacity text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="relative group cursor-pointer overflow-hidden rounded-lg aspect-square" onclick="openLightbox(this)">
+                            <img src="https://i.postimg.cc/HL6fGgxY/Stadium.jpg" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Stadium">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                                <i class="fas fa-play text-white opacity-0 group-hover:opacity-100 transition-opacity text-2xl"></i>
+                            </div>
+                        </div>
+                        <div class="relative group cursor-pointer overflow-hidden rounded-lg aspect-square bg-maritime-navy flex items-center justify-center">
+                            <span class="text-white font-bold text-lg">+48</span>
+                            <span class="absolute inset-0 flex items-center justify-center text-white text-sm font-medium opacity-0 hover:opacity-100 transition-opacity bg-maritime-navy/80">View All</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 bg-gradient-to-br from-maritime-ocean to-maritime-wave rounded-xl p-6 text-white text-center">
+                        <i class="fas fa-camera text-3xl mb-3 opacity-80"></i>
+                        <h4 class="font-bold mb-2">Submit Your Photos</h4>
+                        <p class="text-sm opacity-90 mb-4">Share your game day photos from any port</p>
+                        <button class="bg-white text-maritime-ocean font-bold py-2 px-4 rounded-lg text-sm hover:bg-slate-100 transition-colors w-full">Upload Photo</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="bg-maritime-navy rounded-3xl p-8 lg:p-12 text-center relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+                <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    <path d="M0 50 Q 25 30 50 50 T 100 50" stroke="white" fill="none" stroke-width="0.5"/>
+                    <path d="M0 60 Q 25 40 50 60 T 100 60" stroke="white" fill="none" stroke-width="0.5"/>
+                    <path d="M0 70 Q 25 50 50 70 T 100 70" stroke="white" fill="none" stroke-width="0.5"/>
+                </svg>
+            </div>
+            <div class="relative z-10 max-w-2xl mx-auto">
+                <h2 class="font-display text-3xl lg:text-4xl font-bold text-white mb-4">Stay Connected to the League</h2>
+                <p class="text-slate-300 mb-8">Get the latest scores, port schedules, and franchise news delivered to your inbox.</p>
+                <form class="flex flex-col sm:flex-row gap-3" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+                    <input type="email" placeholder="Enter your email address" class="flex-1 px-6 py-4 rounded-lg text-slate-800 focus:outline-none focus:ring-4 focus:ring-maritime-ocean/30" required>
+                    <button type="submit" class="bg-sport-gold hover:bg-amber-500 text-maritime-navy font-bold py-4 px-8 rounded-lg transition-all transform hover:scale-105 shadow-lg">
+                        Subscribe
+                    </button>
+                </form>
+                <p class="text-slate-400 text-xs mt-4">By subscribing, you agree to receive league updates. Unsubscribe anytime.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center gap-2 mb-4 text-white">
+                        <i class="fas fa-anchor text-2xl text-maritime-ocean"></i>
+                        <span class="font-display font-bold text-xl">SHIPPING<span class="text-maritime-ocean">BASEBALL</span></span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-4">Uniting the maritime industry through America's pastime. Promoting world peace through baseball since 2024.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-maritime-ocean hover:text-white transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-maritime-ocean hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-maritime-ocean hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-maritime-ocean hover:text-white transition-colors"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-sm">League</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-maritime-ocean transition-colors">About SBL</a></li>
+                        <li><a href="#" class="hover:text-maritime-ocean transition-colors">Commissioner's Office</a></li>
+                        <li><a href="#" class="hover:text-maritime-ocean transition-colors">World Peace Mission</a></li>
+                        <li><a href="#" class="hover:text-maritime-ocean transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-maritime-ocean transition-colors">Press Room</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-sm">Resources</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-maritime-ocean transition-colors">Rule Book</a></li>
+                        <li><a href="#" class="hover:text-maritime-ocean transition-colors">Schedule Downloads</a></li>
+                        <li><a href="#" class="hover:text-maritime-ocean transition-colors">Franchise Auction</a></li>
+                        <li><a href="#" class="hover:text-maritime-ocean transition-colors">Fan Forum</a></li>
+                        <li><a href="#" class="hover:text-maritime-ocean transition-colors">Mobile App</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase tracking-wider text-sm">Contact</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-envelope mt-1 text-maritime-ocean"></i>
+                            <span>info@shippingbaseball.com</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-map-marker-alt mt-1 text-maritime-ocean"></i>
+                            <span>1 Maritime Plaza<br>San Francisco, CA 94111</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-phone mt-1 text-maritime-ocean"></i>
+                            <span>+1 (415) 555-SHIP</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+                <p>&copy; 2026 Shipping Baseball League. All rights reserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-white transition-colors">Cookie Settings</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 bg-black/95 z-50 hidden flex items-center justify-center p-4" onclick="closeLightbox()">
+        <button class="absolute top-4 right-4 text-white text-4xl hover:text-maritime-ocean transition-colors" onclick="closeLightbox()">&times;</button>
+        <img id="lightboxImg" src="" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Tab Switching
+        function switchTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.remove('hidden');
+            
+            // Update button styles
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-maritime-navy', 'text-white');
+                btn.classList.add('text-slate-600', 'hover:bg-slate-100');
+            });
+            
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+            activeBtn.classList.add('bg-maritime-navy', 'text-white');
+        }
+
+        // Live Score Ticker Data
+        const games = [
+            { away: 'Rotterdam', home: 'Hamburg', awayScore: 4, homeScore: 2, inning: 'Bot 7th', status: 'LIVE' },
+            { away: 'Singapore', home: 'Tokyo', awayScore: 1, homeScore: 1, inning: 'Top 5th', status: 'LIVE' },
+            { away: 'Panama', home: 'Long Beach', awayScore: 0, homeScore: 0, inning: '1:30 PM', status: 'UPCOMING' },
+            { away: 'Dubai', home: 'Mumbai', awayScore: 7, homeScore: 3, inning: 'Final', status: 'FINAL' }
+        ];
+
+        function updateTicker() {
+            const ticker = document.getElementById('liveScores');
+            let html = '';
+            games.forEach(game => {
+                const statusColor = game.status === 'LIVE' ? 'text-sport-red' : (game.status === 'FINAL' ? 'text-slate-400' : 'text-slate-300');
+                const pulse = game.status === 'LIVE' ? '<span class="inline-block w-2 h-2 bg-sport-red rounded-full live-indicator mr-2"></span>' : '';
+                html += `
+                    <span class="mx-8 inline-flex items-center">
+                        ${pulse}
+                        <span class="${statusColor} font-bold mr-2">[${game.status}]</span>
+                        <span class="text-white font-bold">${game.away} ${game.awayScore}</span>
+                        <span class="text-slate-400 mx-2">vs</span>
+                        <span class="text-white font-bold">${game.home} ${game.homeScore}</span>
+                        <span class="text-slate-400 ml-2 text-xs">(${game.inning})</span>
+                    </span>
+                `;
+            });
+            // Duplicate for seamless loop
+            ticker.innerHTML = html + html;
+        }
+
+        // Simulate live score updates
+        setInterval(() => {
+            games.forEach(game => {
+                if (game.status === 'LIVE' && Math.random() > 0.7) {
+                    if (Math.random() > 0.5) {
+                        game.awayScore++;
+                    } else {
+                        game.homeScore++;
+                    }
+                }
+            });
+            updateTicker();
+        }, 5000);
+
+        updateTicker();
+
+        // Auction Countdown
+        function updateCountdown() {
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + 14); // 14 days from now
+            
+            const now = new Date();
+            const diff = endDate - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('auctionCountdown').textContent = 
+                `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Schedule Data Generator
+        const scheduleData = [
+            { date: 'Today', time: '7:00 PM', away: 'Rotterdam Mariners', home: 'Hamburg Haulers', port: 'Rotterdam', status: 'LIVE' },
+            { date: 'Today', time: '9:30 PM', away: 'Singapore Sailors', home: 'Tokyo Traders', port: 'Singapore', status: 'UPCOMING' },
+            { date: 'Tomorrow', time: '1:00 PM', away: 'Panama Canalers', home: 'Long Beach Longshoremen', port: 'Panama City', status: 'UPCOMING' },
+            { date: 'Tomorrow', time: '4:00 PM', away: 'Dubai Dhows', home: 'Mumbai Mariners', port: 'Dubai', status: 'UPCOMING' },
+        ];
+
+        function renderSchedule() {
+            const container = document.getElementById('scheduleContainer');
+            container.innerHTML = scheduleData.map(game => `
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6 flex flex-col md:flex-row items-center justify-between gap-4 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center gap-4 w-full md:w-auto">
+                        <div class="text-center min-w-[80px]">
+                            <div class="text-sm text-slate-500 uppercase font-bold">${game.date}</div>
+                            <div class="text-lg font-display font-bold text-maritime-navy">${game.time}</div>
+                        </div>
+                        <div class="h-12 w-px bg-slate-200 hidden md:block"></div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-1">
+                                <span class="font-bold text-slate-800">${game.away}</span>
+                                <span class="text-slate-400 text-sm">@</span>
+                                <span class="font-bold text-slate-800">${game.home}</span>
+                            </div>
+                            <div class="text-sm text-maritime-steel"><i class="fas fa-map-marker-alt text-sport-red mr-1"></i>${game.port}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        ${game.status === 'LIVE' ? 
+                            '<span class="bg-sport-red text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1"><span class="w-2 h-2 bg-white rounded-full animate-pulse"></span> Live Now</span>' : 
+                            '<span class="bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Upcoming</span>'
+                        }
+                        <button class="bg-maritime-navy text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-maritime-ocean transition-colors">
+                            ${game.status === 'LIVE' ? 'Watch Live' : 'Set Reminder'}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        renderSchedule();
+
+        // Lightbox Functions
+        function openLightbox(element) {
+            const img = element.querySelector('img');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            lightboxImg.src = img.src;
+            lightbox.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
